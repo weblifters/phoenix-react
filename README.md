@@ -16,4 +16,11 @@ Notes from Tyler McGinnis:
 Also Google:
   Ducks
 
-To run: webpack-dev-server --port 3000
+
+npm install
+To run client: webpack-dev-server --port 3000
+To run server: node server.js
+
+Style Guide:
+
+//todo - maybe implement linting
