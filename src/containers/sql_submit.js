@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateSqlQuery, postSqlQuery } from '../actions/index';
 
 class SqlSubmit extends Component {
 
@@ -16,11 +19,12 @@ class SqlSubmit extends Component {
     this.setState({
       sqlQuery: query.target.value 
     });
+    this.props.updateSqlQuery(this.state.sqlQuery);//might not be necessary
   }
 
   submitQuery(query) {
     console.log(this.state.sqlQuery);
-    //use axios to make api call
+    this.props.postSqlQuery(this.state.sqlQuery);
   }
   
   render() {
@@ -37,4 +41,8 @@ class SqlSubmit extends Component {
   }
 }
 
-export default SqlSubmit;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ updateSqlQuery, postSqlQuery }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(SqlSubmit);
