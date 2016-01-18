@@ -24,3 +24,7 @@ To run server: node server.js
 Style Guide:
 
 //todo - maybe implement linting
+
+Sample Query:
+
+SELECT FIRST_NAME, LAST_NAME, MAILING_STATE FROM STUDENTS
