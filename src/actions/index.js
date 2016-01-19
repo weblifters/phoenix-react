@@ -17,11 +17,12 @@ export function postSqlQuery(query) {
   console.log('>>>query', query);
   const request = axios.post(`${ROOT_URL}sql_query`, {
     query: query
-  }).then(response => console.log(response))
-    .catch(response => console.log(response));
+  }).then(response => { 
+    console.log(response);
+    return response.data; 
+  }).catch(response => console.log(response));
   return {
-    type: POST_SQL_QUERY,
+    type: POST_SQL_QUERY, 
     payload: request
   };
 }
-
