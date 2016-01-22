@@ -14,10 +14,11 @@ class QueryGrid extends Component {
   };
 
   exportCSV() {
-    let headers    = '#,',
-        csvContent = "data:text/csv;charset=utf-8,",
-        data,
-        encodedUri;
+    let headers    = '#,'
+      , csvContent = "data:text/csv;charset=utf-8,"
+      , data
+      , encodedUri
+      ;
 
     this.props.sqlQueryResults.metaData.forEach((header, index) => {
       headers += index < this.props.sqlQueryResults.metaData.length ? header.name + ',' : header.name; 
