@@ -5,19 +5,39 @@ class QueryGrid extends Component {
 
   constructor(props) {
     super(props);
+
+    this.exportCSV = this.exportCSV.bind(this);
   }
 
   propTypes: {
-  	sqlQueryResults: React.PropTypes.array
+    sqlQueryResults: React.PropTypes.array
   };
 
-  render() {
-  	console.log(">>>> sqlQueryResults", this.props.sqlQueryResults);
+  exportCSV() {
+    let headers    = '#,',
+        csvContent = "data:text/csv;charset=utf-8,",
+        data,
+        encodedUri;
 
+    this.props.sqlQueryResults.metaData.forEach((header, index) => {
+      headers += index < this.props.sqlQueryResults.metaData.length ? header.name + ',' : header.name; 
+    });
+
+    csvContent += headers + '\n';
+    this.props.sqlQueryResults.rows.forEach((row, index) => {
+      data = row.join(',');
+      csvContent += index < this.props.sqlQueryResults.rows.length ? data + "\n" : data;
+    });
+    encodedUri = encodeURI(csvContent);
+    window.open(encodedUri);
+  }
+
+  render() {
     let content = <p>Enter a SQL query into the text area above to generate a report.</p>;
     if (this.props.sqlQueryResults){
       content = (
         <div>
+        <button className="btn btn-primary" onClick={this.exportCSV}>Export As CSV</button>
         <table className="table">
           <thead className="thead-inverse">
             <tr>

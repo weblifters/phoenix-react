@@ -1,14 +1,14 @@
-var requests   = require('./api/requests.js')
-  , express    = require('express')
-  , bodyParser = require('body-parser')
-  , passport   = require('passport')
+var requests      = require('./api/requests.js')
+  , express       = require('express')
+  , bodyParser    = require('body-parser')
+  , passport      = require('passport')
   , LocalStrategy = require('passport-local')
-  , app        = express()
-  , port       = 8000
+  , app           = express()
+  , port          = 8000
   ;
 
 passport.use(new LocalStrategy(
-  function(username, password, done) { 
+  function(username, password, done) {
     if (username === 'Ben' && password === 'asdfasdf') {
       done(null, { id: 14714, username: 'Ben Nelson'});
     }
@@ -53,7 +53,7 @@ app.get('/get_sample_students', [bodyParser()], function(req, res) {
 });
 
 app.post('/signup', function(req, res) {
-  signUpUser();       
+  signUpUser();
 });
 
 app.post('/sql_query', [bodyParser()],  function(req, res) {
@@ -63,7 +63,7 @@ app.post('/sql_query', [bodyParser()],  function(req, res) {
   });
 });
 
-app.post('/login', [bodyParser()], 
+app.post('/login', [bodyParser()],
          passport.authenticate('local', { failureRedirect: '/login' }),
          function(req, res) {
            res.send({ status: 'Authenticated', token: '14714' });
