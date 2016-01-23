@@ -3,9 +3,13 @@ var requests      = require('./api/requests.js')
   , bodyParser    = require('body-parser')
   , passport      = require('passport')
   , LocalStrategy = require('passport-local')
+  , Mongoose      = require('mongoose')
+  , mongoUrl      = require('./api/db/config.js')
   , app           = express()
   , port          = 8000
   ;
+
+Mongoose.connect(mongoUrl.url);
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
@@ -17,6 +21,7 @@ passport.use(new LocalStrategy(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json());
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -33,11 +38,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/', function(req, res) {
-  res.send('Hello World!');
-});
+app.use('/api', require('./api/routes/api'));
 
-app.get('/get_sample_students', [bodyParser()], function(req, res) {
+app.get('/get_sample_students', function(req, res) {
   requests.getSampleStudents(function(sampleStudents) {
     var formattedObj = {};
     formattedObj.students = [];
@@ -56,8 +59,7 @@ app.post('/signup', function(req, res) {
   signUpUser();
 });
 
-app.post('/sql_query', [bodyParser()],  function(req, res) {
-  //Need to handle errors somehow
+app.post('/sql_query', function(req, res) {
   requests.customSqlQuery(req.body.query, function(response) {
     res.send(response);
   });
