@@ -22,7 +22,7 @@ p {
 
 #sendQuery {
 	position: relative;
-	top: -100px;
+	top: -110px;
 	left: 5%;
 }
 
@@ -30,3 +30,21 @@ p {
 	margin-top: 20px;
 }
 
+.csv {
+	display: inline-block;
+}
+
+.past-queries{
+	width: 100%;
+	list-style: none;
+	background-color: whitesmoke;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+/*.reportGrid {
+	overflow: auto;
+	overflow-y: hidden;
+}*/

@@ -38,8 +38,8 @@ class QueryGrid extends Component {
     if (this.props.sqlQueryResults){
       content = (
         <div>
-        <button className="btn btn-primary" onClick={this.exportCSV}>Export As CSV</button>
-        <table className="table">
+        <button className="btn btn-primary csv" onClick={this.exportCSV}>Export As CSV</button>
+        <table className="table reportGrid">
           <thead className="thead-inverse">
             <tr>
               <th>#</th>
@@ -51,7 +51,7 @@ class QueryGrid extends Component {
           <tbody>
             {this.props.sqlQueryResults.rows.map((row, index) => {
               row.unshift(index+1);
-              console.log(row);
+              //console.log(row);
               return (<tr key={index}>
                   {row.map((column, index) => {
                     return <td key={index}>{column}</td>;
@@ -59,13 +59,6 @@ class QueryGrid extends Component {
                 </tr>)
                 }
             )}
-
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
           </tbody>
         </table>
       </div>
