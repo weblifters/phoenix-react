@@ -13,7 +13,7 @@ class SqlSubmit extends Component {
     //this binds 'this' inside of these component methods so we can update state
     this.updateQuery = this.updateQuery.bind(this);
     this.submitQuery = this.submitQuery.bind(this);
-    this.getUser = this.getUser.bind(this);
+    this.getUser();
   }
 
   updateQuery(query) {
@@ -23,34 +23,26 @@ class SqlSubmit extends Component {
     this.props.updateSqlQuery(this.state.sqlQuery); //might not be necessary
   }
 
-  submitQuery(query) {
+  submitQuery() {
+    this.props.postSqlQuery(this.state.sqlQuery).then( response => {
+      this.getUser();
+    });
+  }
 
-    this.props.postSqlQuery(this.state.sqlQuery);
-
-    // console.log(this.props.getUser());
-
+  getUser() {
     var that = this
-
     var promise = this.props.getUser();
-
-    console.log("PROMISE", promise);
-
     promise.then(function(data){
-      console.log("DATA", data.payload)
       that.setState({
         user: data.payload
       })
-      
     });
-
-    console.log("USER", this.state.user);
-
   }
 
-  getUser(){
-
+  selectQuery(query) {
+    this.updateQuery({target: { value: query.query } });
   }
-  
+
   render() {
     return (
       <div>
@@ -63,8 +55,8 @@ class SqlSubmit extends Component {
         <div> 
           <h3>Recent Queries</h3>
           <ul className="past-queries"> 
-            {this.state.user.queries.reverse().map( query => {
-              return <li> {query.query} </li>
+            {this.state.user.queries.map( (query, i) => {
+              return <li className="old-query" key={i} onClick={this.selectQuery.bind(this, query)}> {query.query} </li>
              })}
           </ul>
         </div>

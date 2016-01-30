@@ -37,7 +37,7 @@ class QueryGrid extends Component {
     let content = <p>Enter a SQL query into the text area above to generate a report.</p>;
     if (this.props.sqlQueryResults){
       content = (
-        <div>
+        <div className="query-container">
         <button className="btn btn-primary csv" onClick={this.exportCSV}>Export As CSV</button>
         <table className="table reportGrid">
           <thead className="thead-inverse">
