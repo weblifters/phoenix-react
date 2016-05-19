@@ -1,4 +1,4 @@
-import { UPDATE_SQL_QUERY } from '../actions/index';
+import { UPDATE_SQL_QUERY } from '../actions/types';
 
 export default function(state = '', action) {
   switch (action.type) {

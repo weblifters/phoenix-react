@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
- 
+
 class QueryGrid extends Component {
 
   constructor(props) {
@@ -21,7 +21,7 @@ class QueryGrid extends Component {
       ;
 
     this.props.sqlQueryResults.metaData.forEach((header, index) => {
-      headers += index < this.props.sqlQueryResults.metaData.length ? header.name + ',' : header.name; 
+      headers += index < this.props.sqlQueryResults.metaData.length ? header.name + ',' : header.name;
     });
 
     csvContent += headers + '\n';
@@ -45,17 +45,16 @@ class QueryGrid extends Component {
               <th>#</th>
               {this.props.sqlQueryResults.metaData.map((header, index) => {
                 return <th key={index}>{header.name}</th>;
-              })} 
+              })}
             </tr>
           </thead>
           <tbody>
             {this.props.sqlQueryResults.rows.map((row, index) => {
               row.unshift(index+1);
-              //console.log(row);
               return (<tr key={index}>
                   {row.map((column, index) => {
                     return <td key={index}>{column}</td>;
-                  })}  
+                  })}
                 </tr>)
                 }
             )}
@@ -70,7 +69,7 @@ class QueryGrid extends Component {
 
 function query(state){
 	return {
-		sqlQueryResults: state.sqlQueryResults 
+		sqlQueryResults: state.sqlQueryResults
 	};
 }
 

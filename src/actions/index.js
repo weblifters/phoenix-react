@@ -1,16 +1,26 @@
 import axios from 'axios';
+import {
+  GET_USER,
+  POST_SQL_QUERY,
+  UPDATE_SQL_QUERY,
+  CHANGE_AUTH
+} from './types';
 
 //Set this to whatever port your node server is listening on
-const ROOT_URL = 'http://localhost:8000/api/';
+const ROOT_URL = 'http://localhost:8000/';
 
-export const GET_USER = 'GET_USER';
-export const POST_SQL_QUERY = 'POST_SQL_QUERY';
-export const UPDATE_SQL_QUERY = 'UPDATE_SQL_QUERY';
+export function signin(isLoggedIn) {
+  return {
+    type: CHANGE_AUTH,
+    payload: isLoggedIn
+  };
+}
 
 export function getUser() {
-  const request = axios.get(`${ROOT_URL}/user/get-user`, {
-    userid: "56a3db668b69b8f197165da7"
+  const request = axios.get(`${ROOT_URL}user/get-user`, {
+    username: "sunjieming"
   }).then(response => {
+    console.log('response', response);
     return response.data;
   }).catch(response => console.log(response));
   return {
@@ -29,14 +39,13 @@ export function updateSqlQuery(query) {
 export function postSqlQuery(query) {
   const request = axios.post(`${ROOT_URL}user/save-user-query`, {
     query: query,
-    userid: '56a3db668b69b8f197165da7'
-  }).then(response => { 
-    return response.data; 
+    username: 'sunjieming'
+  }).then(response => {
+    return response.data;
   }).catch(response => console.log(response));
+
   return {
-    type: POST_SQL_QUERY, 
+    type: POST_SQL_QUERY,
     payload: request
   };
 }
-
-

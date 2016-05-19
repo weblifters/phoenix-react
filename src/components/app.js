@@ -1,16 +1,19 @@
-import React from 'react';
-import { Component } from 'react';
-import SqlSubmit from '../containers/sql_submit';
-import QueryGrid from '../containers/query_grid';
+import React, { Component } from 'react';
+import SqlSubmit            from './sql_submit';
+import QueryGrid            from './query_grid';
+import Header               from './header';
 
 export default class App extends Component {
   render() {
     return (
       <div>
-        <h1 id="title">Enter a SQL Query</h1>
-        <SqlSubmit />
-        <QueryGrid />
+        <Header />
+        {this.props.children}
       </div>
     );
   }
 }
+
+// <h1 id="title">Enter a SQL Query</h1>
+// <SqlSubmit />
+// <QueryGrid />
