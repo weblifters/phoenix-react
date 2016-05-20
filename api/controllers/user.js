@@ -1,5 +1,4 @@
 var User     = require('../models/User.js')
-  , Query    = require('../models/Query.js')
   , Mongoose = require('mongoose')
   , requests = require('../requests.js')
   ;
@@ -7,7 +6,9 @@ var User     = require('../models/User.js')
 module.exports = {
 
   getUser: function (req, res) {
-    User.findOne({_id: "56a3db668b69b8f197165da7"}).exec(function(err, user){
+    console.log('GET USER!');
+    User.findOne({_id: "573f20fd1c8751c0522153c1"}).exec(function(err, user){
+      console.log('USER', err, user);
       if(err){
         return res.send(err);
       } else {
@@ -16,23 +17,22 @@ module.exports = {
     })
   },
   saveUserQuery: function(req, res) {
-    //console.log('saveUserQuery', req.body);
-    var newQuery = new Query({
+    var newQuery = {
       query: req.body.query,
       date: new Date()
-    });
-    
+    };
+
+    console.log('newQuery', newQuery);
     User.findByIdAndUpdate(
-      req.body.userid, 
-      { $push: { "queries": newQuery  } }, 
-      null, 
+      '573f20fd1c8751c0522153c1',
+      { $push: { "queries": newQuery  } },
+      null,
       function(err, model) {
         if (err) console.log('err', err);
-        //console.log('updated model');      
         requests.customSqlQuery(req.body.query, function(response) {
           res.send(response);
         });
     });
-  } 
+  }
 
 };

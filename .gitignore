@@ -3,3 +3,4 @@ bundle.js
 npm-debug.log
 *.swp
 .DS_Store
+credentials.js

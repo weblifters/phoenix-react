@@ -5,6 +5,8 @@ var mongoose = require('mongoose')
 
 mongoose.connect(mongoUrl.url);
 
+console.log('mongoUrl', mongoUrl);
+
 var ben = new User({
   username: 'ben',
   password: 'ben'
@@ -21,4 +23,3 @@ ben.save(function(err) {
     process.exit(0);
   });
 });
-

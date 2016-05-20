@@ -1,11 +1,13 @@
 var oracledb = require('oracledb');
-var credentials = require('./credentials.js');
+var credentials = require('./credentials');
+
+console.log('credentials', credentials);
 
 exports.getSampleStudents = function(cb) {
   oracledb.getConnection({
     user          : credentials.user,
     password      : credentials.password,
-    connectString : credentials.connectString 
+    connectString : credentials.connectString
   },
   function(err, connection) {
     if (err) { console.error(err.message); return; }
@@ -29,12 +31,14 @@ exports.getSampleStudents = function(cb) {
 }
 
 exports.customSqlQuery = function(sqlQuery, cb) {
+  console.log('custom query!!!');
   oracledb.getConnection({
     user          : credentials.user,
     password      : credentials.password,
     connectString : credentials.connectString
   },
   function(err, connection) {
+    console.log('sqlQuery', sqlQuery);
     if (err) { console.error(err.message); return; }
     connection.execute(
       sqlQuery,

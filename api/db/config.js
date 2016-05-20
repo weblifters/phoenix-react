@@ -1,4 +1,3 @@
 module.exports = {
-  'url' : 'mongodb://ben:benspass@ds047365.mongolab.com:47365/phoenix-react'
+  'url' : 'mongodb://ben:benspass@ds039504.mongolab.com:39504/phoenix'
 }
-
