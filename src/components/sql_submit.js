@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updateSqlQuery, postSqlQuery, getRecentQueries } from '../actions/index';
 import * as actions         from '../actions';
 
 class SqlSubmit extends Component {
@@ -16,14 +15,12 @@ class SqlSubmit extends Component {
     this.state = {
       sqlQuery: ''
     };
-
   }
 
   updateQuery(query) {
     this.setState({
       sqlQuery: query.target.value
     });
-    this.props.updateSqlQuery(this.state.sqlQuery); //might not be necessary
   }
 
   submitQuery() {
@@ -54,15 +51,10 @@ class SqlSubmit extends Component {
   }
 }
 
-function mapStateToProps({ recentQueries, sqlQuery }) {
+function mapStateToProps({ recentQueries }) {
   return {
-    recentQueries,
-    sqlQuery
+    recentQueries
   };
 }
-
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ updateSqlQuery, postSqlQuery, getRecentQueries }, dispatch);
-// }
 
 export default connect(mapStateToProps, actions)(SqlSubmit);

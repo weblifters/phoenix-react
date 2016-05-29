@@ -10,7 +10,6 @@ import {
   RECENT_QUERIES
 } from './types';
 
-//Set this to whatever port your node server is listening on
 const ROOT_URL = 'http://localhost:3090';
 
 export function signin(isLoggedIn) {
@@ -44,8 +43,8 @@ export function postSqlQuery(query) {
     },{
       headers: { authorization: localStorage.getItem('token') }
     }).then(response => {
-      dispatch({ type: POST_SQL_QUERY, payload: request });
-      //dispatch(getRecentQueries());
+      dispatch({ type: POST_SQL_QUERY, payload: response.data });
+      dispatch(getRecentQueries());
     }).catch(response => console.log(response));
   }
 }

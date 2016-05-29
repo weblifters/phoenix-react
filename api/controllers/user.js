@@ -28,7 +28,6 @@ exports.saveUserQuery = function(req, res) {
     function(err, model) {
       if (err) console.log('err', err);
       oracle.customSqlQuery(req.body.query, function(response) {
-        console.log('RESPONSE', response);
         res.send(response);
       });
     }
