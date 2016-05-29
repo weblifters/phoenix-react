@@ -1,7 +1,6 @@
 import { POST_SQL_QUERY } from '../actions/types';
 
 export default function(state = null, action) {
-	console.log(action);
 
   switch (action.type) {
   case POST_SQL_QUERY:

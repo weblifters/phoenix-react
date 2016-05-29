@@ -1,26 +1,28 @@
-import axios from 'axios';
+import axios              from 'axios';
+import { browserHistory } from 'react-router';
 import {
   GET_USER,
   POST_SQL_QUERY,
   UPDATE_SQL_QUERY,
-  CHANGE_AUTH
+  AUTH_USER,
+  AUTH_ERROR,
+  UNAUTH_USER
 } from './types';
 
 //Set this to whatever port your node server is listening on
-const ROOT_URL = 'http://localhost:8000/';
+const ROOT_URL = 'http://localhost:3090';
 
 export function signin(isLoggedIn) {
   return {
-    type: CHANGE_AUTH,
+    type: AUTH_USER,
     payload: isLoggedIn
   };
 }
 
 export function getUser() {
-  const request = axios.get(`${ROOT_URL}user/get-user`, {
+  const request = axios.get(`${ROOT_URL}/user/get-user`, {
     username: "sunjieming"
   }).then(response => {
-    console.log('response', response);
     return response.data;
   }).catch(response => console.log(response));
   return {
@@ -37,7 +39,7 @@ export function updateSqlQuery(query) {
 }
 
 export function postSqlQuery(query) {
-  const request = axios.post(`${ROOT_URL}user/save-user-query`, {
+  const request = axios.post(`${ROOT_URL}/user/save-user-query`, {
     query: query,
     username: 'sunjieming'
   }).then(response => {
@@ -48,4 +50,44 @@ export function postSqlQuery(query) {
     type: POST_SQL_QUERY,
     payload: request
   };
+}
+
+export function signUpUser({ email, password }) {
+  return function(dispatch) {
+    const request = axios.post(`${ROOT_URL}/signup`, { email, password })
+      .then(response => {
+        dispatch({ type: AUTH_USER });
+        localStorage.setItem('token', response.data.token);
+        browserHistory.push('/query');
+      })
+      .catch(response => {
+        dispatch(authError(response.data.error));
+      });
+  }
+}
+
+export function signinUser({ email, password }) {
+  return function(dispatch) {
+    const request = axios.post(`${ROOT_URL}/signin`, { email, password })
+      .then(response => {
+        dispatch({ type: AUTH_USER });
+        localStorage.setItem('token', response.data.token);
+        browserHistory.push('/query');
+      })
+      .catch(() => {
+        dispatch(authError('Bad Sign In Info'));
+      });
+  }
+}
+
+export function authError(error) {
+  return {
+    type: AUTH_ERROR,
+    payload: error
+  };
+}
+
+export function signoutUser() {
+  localStorage.removeItem('token');
+  return { type: UNAUTH_USER };
 }
