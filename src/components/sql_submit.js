@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updateSqlQuery, postSqlQuery, getUser } from '../actions/index';
+import { updateSqlQuery, postSqlQuery, getRecentQueries } from '../actions/index';
+import * as actions         from '../actions';
 
 class SqlSubmit extends Component {
+
+  componentWillMount() {
+    this.props.getRecentQueries();
+  }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      sqlQuery: '',
-      queryResults: {},
-      user: {
-        queries: []
-      }
+      sqlQuery: ''
     };
 
     //this binds 'this' inside of these component methods so we can update state
     this.updateQuery = this.updateQuery.bind(this);
     this.submitQuery = this.submitQuery.bind(this);
-    this.getUser();
+    //this.getRecentQueries();
   }
 
   updateQuery(query) {
@@ -31,17 +32,7 @@ class SqlSubmit extends Component {
 
   submitQuery() {
     this.props.postSqlQuery(this.state.sqlQuery).then( response => {
-      this.getUser();
-    });
-  }
-
-  getUser() {
-    var that = this
-    var promise = this.props.getUser();
-    promise.then(function(data){
-      that.setState({
-        user: data.payload
-      });
+      //this.getUser();
     });
   }
 
@@ -50,29 +41,35 @@ class SqlSubmit extends Component {
   }
 
   render() {
-    return (
+    console.log('this.props', this.props);
+    return <div>
+      <textarea id="queryBox" className="form-control" rows="8"
+        defaultValue="Enter SQL Query"
+        value={this.state.sqlQuery}
+        onChange={this.updateQuery}>
+      </textarea>
+      <button id="sendQuery" type="button" className="btn btn-primary" onClick={this.submitQuery}>Submit</button>
       <div>
-        <textarea id="queryBox" className="form-control" rows="8"
-          defaultValue="Enter SQL Query"
-          value={this.state.sqlQuery}
-          onChange={this.updateQuery}>
-        </textarea>
-        <button id="sendQuery" type="button" className="btn btn-primary" onClick={this.submitQuery}>Submit</button>
-        <div>
-          <h3>Recent Queries</h3>
-          <ul className="past-queries">
-            {this.state.user.queries.map( (query, i) => {
-              return <li className="old-query" key={i} onClick={this.selectQuery.bind(this, query)}> {query.query} </li>
-             })}
-          </ul>
-        </div>
+        <h3>Recent Queries</h3>
+        <ul className="past-queries">
+          {this.props.recentQueries.map((query, i) => {
+            return <li className="old-query" key={i} onClick={this.selectQuery.bind(this, query)}> {query.query} </li>
+          })}
+        </ul>
       </div>
-    );
+    </div>
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ updateSqlQuery, postSqlQuery, getUser }, dispatch);
+function mapStateToProps({ recentQueries, sqlQuery }) {
+  return {
+    recentQueries,
+    sqlQuery
+  };
 }
 
-export default connect(null, mapDispatchToProps)(SqlSubmit);
+// function mapDispatchToProps(dispatch) {
+//   return bindActionCreators({ updateSqlQuery, postSqlQuery, getRecentQueries }, dispatch);
+// }
+
+export default connect(mapStateToProps, actions)(SqlSubmit);

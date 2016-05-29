@@ -17,9 +17,9 @@ module.exports = function(app) {
   app.post('/signup',
     Authentication.signup
   );
-  app.get('/user/get-user',
-    requireSignin,
-    User.getUser
+  app.get('/user/recent-queries',
+    requireAuth,
+    User.getRecentQueries
   );
   app.post('/user/save-user-query',
     requireSignin,

@@ -6,7 +6,8 @@ import {
   UPDATE_SQL_QUERY,
   AUTH_USER,
   AUTH_ERROR,
-  UNAUTH_USER
+  UNAUTH_USER,
+  RECENT_QUERIES
 } from './types';
 
 //Set this to whatever port your node server is listening on
@@ -19,16 +20,15 @@ export function signin(isLoggedIn) {
   };
 }
 
-export function getUser() {
-  const request = axios.get(`${ROOT_URL}/user/get-user`, {
-    username: "sunjieming"
-  }).then(response => {
-    return response.data;
-  }).catch(response => console.log(response));
-  return {
-    type: GET_USER,
-    payload: request
-  };
+export function getRecentQueries() {
+  return function(dispatch) {
+    const request = axios.get(`${ROOT_URL}/user/recent-queries`, {
+      headers: { authorization: localStorage.getItem('token') }
+    }).then(response => {
+      console.log('response', response);
+      dispatch({ type: RECENT_QUERIES, payload: response.data });
+    });
+  }
 }
 
 export function updateSqlQuery(query) {
@@ -55,28 +55,28 @@ export function postSqlQuery(query) {
 export function signUpUser({ email, password }) {
   return function(dispatch) {
     const request = axios.post(`${ROOT_URL}/signup`, { email, password })
-      .then(response => {
-        dispatch({ type: AUTH_USER });
-        localStorage.setItem('token', response.data.token);
-        browserHistory.push('/query');
-      })
-      .catch(response => {
-        dispatch(authError(response.data.error));
-      });
+    .then(response => {
+      dispatch({ type: AUTH_USER });
+      localStorage.setItem('token', response.data.token);
+      browserHistory.push('/query');
+    })
+    .catch(response => {
+      dispatch(authError(response.data.error));
+    });
   }
 }
 
 export function signinUser({ email, password }) {
   return function(dispatch) {
     const request = axios.post(`${ROOT_URL}/signin`, { email, password })
-      .then(response => {
-        dispatch({ type: AUTH_USER });
-        localStorage.setItem('token', response.data.token);
-        browserHistory.push('/query');
-      })
-      .catch(() => {
-        dispatch(authError('Bad Sign In Info'));
-      });
+    .then(response => {
+      dispatch({ type: AUTH_USER });
+      localStorage.setItem('token', response.data.token);
+      browserHistory.push('/query');
+    })
+    .catch(() => {
+      dispatch(authError('Bad Sign In Info'));
+    });
   }
 }
 

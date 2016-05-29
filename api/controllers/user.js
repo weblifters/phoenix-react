@@ -10,6 +10,10 @@ exports.getUser = function() {
   })
 };
 
+exports.getRecentQueries = function(req, res) {
+  res.send(req.user.queries);
+};
+
 exports.saveUserQuery = function() {
   var newQuery = {
     query: req.body.query,
