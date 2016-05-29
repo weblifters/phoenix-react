@@ -17,10 +17,6 @@ class SqlSubmit extends Component {
       sqlQuery: ''
     };
 
-    //this binds 'this' inside of these component methods so we can update state
-    this.updateQuery = this.updateQuery.bind(this);
-    this.submitQuery = this.submitQuery.bind(this);
-    //this.getRecentQueries();
   }
 
   updateQuery(query) {
@@ -31,9 +27,7 @@ class SqlSubmit extends Component {
   }
 
   submitQuery() {
-    this.props.postSqlQuery(this.state.sqlQuery).then( response => {
-      //this.getUser();
-    });
+    this.props.postSqlQuery(this.state.sqlQuery);
   }
 
   selectQuery(query) {
@@ -41,14 +35,13 @@ class SqlSubmit extends Component {
   }
 
   render() {
-    console.log('this.props', this.props);
     return <div>
       <textarea id="queryBox" className="form-control" rows="8"
         defaultValue="Enter SQL Query"
         value={this.state.sqlQuery}
-        onChange={this.updateQuery}>
+        onChange={this.updateQuery.bind(this)}>
       </textarea>
-      <button id="sendQuery" type="button" className="btn btn-primary" onClick={this.submitQuery}>Submit</button>
+      <button id="sendQuery" type="button" className="btn btn-primary" onClick={this.submitQuery.bind(this)}>Submit</button>
       <div>
         <h3>Recent Queries</h3>
         <ul className="past-queries">

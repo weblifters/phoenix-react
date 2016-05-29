@@ -22,10 +22,9 @@ export function signin(isLoggedIn) {
 
 export function getRecentQueries() {
   return function(dispatch) {
-    const request = axios.get(`${ROOT_URL}/user/recent-queries`, {
+    axios.get(`${ROOT_URL}/user/recent-queries`, {
       headers: { authorization: localStorage.getItem('token') }
     }).then(response => {
-      console.log('response', response);
       dispatch({ type: RECENT_QUERIES, payload: response.data });
     });
   }
@@ -39,17 +38,16 @@ export function updateSqlQuery(query) {
 }
 
 export function postSqlQuery(query) {
-  const request = axios.post(`${ROOT_URL}/user/save-user-query`, {
-    query: query,
-    username: 'sunjieming'
-  }).then(response => {
-    return response.data;
-  }).catch(response => console.log(response));
-
-  return {
-    type: POST_SQL_QUERY,
-    payload: request
-  };
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/user/save-user-query`, {
+      query: query
+    },{
+      headers: { authorization: localStorage.getItem('token') }
+    }).then(response => {
+      dispatch({ type: POST_SQL_QUERY, payload: request });
+      //dispatch(getRecentQueries());
+    }).catch(response => console.log(response));
+  }
 }
 
 export function signUpUser({ email, password }) {

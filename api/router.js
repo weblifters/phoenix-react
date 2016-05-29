@@ -22,7 +22,7 @@ module.exports = function(app) {
     User.getRecentQueries
   );
   app.post('/user/save-user-query',
-    requireSignin,
+    requireAuth,
     User.saveUserQuery
   );
 };

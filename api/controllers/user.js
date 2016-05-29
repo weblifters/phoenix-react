@@ -1,4 +1,5 @@
-const User = require('../models/user');
+const User   = require('../models/user');
+const oracle = require('./oracle');
 
 exports.getUser = function() {
   User.findOne({username: "sunjieming"}).exec(function(err, user){
@@ -14,19 +15,20 @@ exports.getRecentQueries = function(req, res) {
   res.send(req.user.queries);
 };
 
-exports.saveUserQuery = function() {
+exports.saveUserQuery = function(req, res) {
   var newQuery = {
     query: req.body.query,
     date: new Date()
   };
 
   User.update(
-    { username: req.body.username },
+    { email: req.user.email },
     { $push: { "queries": newQuery } },
     null,
     function(err, model) {
       if (err) console.log('err', err);
-      requests.customSqlQuery(req.body.query, function(response) {
+      oracle.customSqlQuery(req.body.query, function(response) {
+        console.log('RESPONSE', response);
         res.send(response);
       });
     }
